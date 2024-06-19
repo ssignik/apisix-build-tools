@@ -14,12 +14,12 @@ build_apisix_base_rpm() {
         set -eu
     elif [[ $(rpm --eval '%{centos_ver}') == "8" ]]; then
         dnf install -y gcc-toolset-9-toolchain patch wget git make sudo
-        dnf install -y yum-utils
+        dnf install -y --releasever=8 yum-utils
         set +eu
         source /opt/rh/gcc-toolset-9/enable
         set -eu
     else
-        dnf install -y yum-utils
+        dnf install -y --releasever=8 yum-utils
         yum -y install --disablerepo=* --enablerepo=ubi-8-appstream-rpms --enablerepo=ubi-8-baseos-rpms gcc gcc-c++ patch wget git make sudo xz
     fi
 
@@ -77,12 +77,12 @@ build_apisix_runtime_rpm() {
         set -eu
     elif [[ $(rpm --eval '%{centos_ver}') == "8" ]]; then
         dnf install -y gcc-toolset-9-toolchain patch wget git make sudo cpanminus
-        dnf install -y yum-utils
+        dnf install -y --releasever=8 yum-utils
         set +eu
         source /opt/rh/gcc-toolset-9/enable
         set -eu
     else
-        dnf install -y yum-utils
+        dnf install -y --releasever=8 yum-utils
         yum -y install --disablerepo=* --enablerepo=ubi-8-appstream-rpms --enablerepo=ubi-8-baseos-rpms gcc gcc-c++ patch wget git make sudo xz cpanminus
     fi
 

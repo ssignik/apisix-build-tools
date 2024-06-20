@@ -27,6 +27,7 @@ build_apisix_base_rpm() {
     command -v gcc
     gcc --version
 
+    dnf install 'dnf-command(config-manager)'
     dnf config-manager --add-repo https://openresty.org/package/centos/openresty.repo
     dnf -y install openresty-openssl111-devel openresty-pcre-devel openresty-zlib-devel
 
@@ -91,9 +92,9 @@ build_apisix_runtime_rpm() {
     command -v gcc
     gcc --version
     
-    dnf install -y 'dnf-command(config-manager)'
+    # dnf install -y 'dnf-command(config-manager)'
     # dnf config-manager --add-repo https://openresty.org/package/centos/openresty.repo
-    dnf -y install openresty-pcre-devel.x86_64 openresty-zlib-devel.x86_64
+    dnf -y install openresty-openssl111-devel openresty-pcre-devel openresty-zlib-devel
 
     export_openresty_variables
     chmod +x ${BUILD_PATH}/build-apisix-runtime.sh

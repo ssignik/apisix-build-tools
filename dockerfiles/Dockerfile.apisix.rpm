@@ -3,7 +3,7 @@ ARG IMAGE_TAG="22.03"
 ARG PACKAGE_TYPE
 ARG RUNTIME_VERSION
 
-FROM zhaoyan0879/apisix-runtime-${PACKAGE_TYPE}:${RUNTIME_VERSION} AS APISIX-RUNTIME
+FROM apache/apisix-runtime-${PACKAGE_TYPE}:${RUNTIME_VERSION} AS APISIX-RUNTIME
 FROM ${IMAGE_BASE}:${IMAGE_TAG}
 
 # Note: The duplication around the rpm series dockerfile here

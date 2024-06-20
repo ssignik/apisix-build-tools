@@ -29,7 +29,7 @@ ENV version=${VERSION}
 ENV runtime_version=${RUNTIME_VERSION}
 
 COPY ${CODE_PATH} ./
-COPY ./yum.repos.d/apache-apisix.repo /etc/yum.repos.d/apache-apisix.repo
+COPY ./yum.repos.d/openresty.repo /etc/yum.repos.d/openresty.repo
 
 RUN dnf install -y curl \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \

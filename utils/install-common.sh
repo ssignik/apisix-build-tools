@@ -131,10 +131,12 @@ install_golang() {
 }
 
 install_dashboard_dependencies_rpm() {
-    yum install -y wget curl git which gcc make
+    dnf install -y wget curl git which gcc make
     curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
     sh -c "$(curl -fsSL https://rpm.nodesource.com/setup_14.x)"
-    yum install -y nodejs yarn
+    # dnf install 'dnf-command(config-manager)'
+    # dnf config-manager --add-repo https://dl.yarnpkg.com/rpm/yarn.repo
+    dnf install -y nodejs yarn
     install_golang
 }
 

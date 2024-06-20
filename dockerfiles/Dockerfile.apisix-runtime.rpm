@@ -1,5 +1,5 @@
-ARG IMAGE_BASE="centos"
-ARG IMAGE_TAG="7"
+ARG IMAGE_BASE="openeuler/openeuler"
+ARG IMAGE_TAG="22.03"
 
 FROM ${IMAGE_BASE}:${IMAGE_TAG}
 
@@ -30,13 +30,15 @@ ENV runtime_version=${RUNTIME_VERSION}
 
 COPY ${CODE_PATH} ./
 
-RUN yum install -y curl \
+RUN dnf install -y curl \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && source "$HOME/.cargo/env" \
     && rustup install 1.69 \
     && rustup default 1.69 \
     # build apisix runtime
     && mv ./utils/build-common.sh ./utils/determine-dist.sh ./ \
+    && chmod +x ./build-common.sh \
     && ./build-common.sh build_apisix_runtime_rpm \
     # determine dist and write it into /tmp/dist file
+    && chmod +x ./determine-dist.sh \
     && ./determine-dist.sh

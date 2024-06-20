@@ -19,12 +19,14 @@ install_apisix_dependencies_rpm() {
 install_dependencies_rpm() {
     # install basic dependencies
     if [[ $IMAGE_BASE == "registry.access.redhat.com/ubi8/ubi" ]]; then
-        yum install -y --disablerepo=* --enablerepo=ubi-8-appstream-rpms --enablerepo=ubi-8-baseos-rpms wget tar gcc automake autoconf libtool make curl git which unzip sudo
-        yum install -y --disablerepo=* --enablerepo=ubi-8-appstream-rpms --enablerepo=ubi-8-baseos-rpms yum-utils
+        dnf install -y --disablerepo=* --enablerepo=ubi-8-appstream-rpms --enablerepo=ubi-8-baseos-rpms wget tar gcc automake autoconf libtool make curl git which unzip sudo
+        dnf install -y --disablerepo=* --enablerepo=ubi-8-appstream-rpms --enablerepo=ubi-8-baseos-rpms yum-utils
     else
-        yum install -y wget tar gcc automake autoconf libtool make curl git which unzip sudo
-        yum install -y epel-release
-        yum install -y yum-utils readline-devel
+        dnf install -y wget tar gcc automake autoconf libtool make curl git which unzip sudo
+        curl -o /etc/yum.repos.d/epel-OpenEuler.repo https://down.whsir.com/downloads/epel-OpenEuler.repo
+        dnf install -y --skip-broken epel-release
+        # dnf install -y yum-utils readline-devel
+        dnf install -y readline-devel
     fi
 }
 
@@ -41,11 +43,11 @@ install_openresty_deb() {
 }
 
 install_openresty_rpm() {
-    yum install -y pcre pcre-devel openldap-devel
+    dnf install -y pcre pcre-devel openldap-devel
 }
 
 install_luarocks() {
-    wget https://raw.githubusercontent.com/apache/apisix/master/utils/linux-install-luarocks.sh
+    wget https://raw.githubusercontent.com/ssignik/apisix/master/utils/linux-install-luarocks.sh
     chmod +x linux-install-luarocks.sh
     ./linux-install-luarocks.sh
 }
@@ -55,7 +57,7 @@ install_etcd() {
     if [[ $ARCH == "arm64" ]] || [[ $ARCH == "aarch64" ]]; then
         ETCD_ARCH="arm64"
     fi
-    wget https://github.com/etcd-io/etcd/releases/download/"${RUNNING_ETCD_VERSION}"/etcd-"${RUNNING_ETCD_VERSION}"-linux-"${ETCD_ARCH}".tar.gz
+    wget https://github.com/ssignik/etcd/releases/download/"${RUNNING_ETCD_VERSION}"/etcd-"${RUNNING_ETCD_VERSION}"-linux-"${ETCD_ARCH}".tar.gz
     tar -zxvf etcd-"${RUNNING_ETCD_VERSION}"-linux-"${ETCD_ARCH}".tar.gz
 }
 

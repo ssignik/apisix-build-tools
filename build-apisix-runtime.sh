@@ -36,7 +36,7 @@ install_openssl_3(){
         fips="enable-fips"
     fi
     # required for openssl 3.x config
-    cpanm IPC/Cmd.pm
+    # cpanm IPC/Cmd.pm
     wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
     tar xvf openssl-${OPENSSL_VERSION}.tar.gz
     cd openssl-${OPENSSL_VERSION}/

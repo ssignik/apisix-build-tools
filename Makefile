@@ -19,16 +19,16 @@ version=0
 checkout=0
 app=0
 type=0
-image_base="centos"
-image_tag="7"
+image_base="openeuler/openeuler"
+image_tag="22.03"
 iteration=0
 local_code_path=0
 openresty="apisix-runtime"
 artifact="0"
-runtime_version="0"
-apisix_repo="https://github.com/apache/apisix"
-apisix_runtime_repo="https://github.com/api7/apisix-build-tools.git"
-dashboard_repo="https://github.com/apache/apisix-dashboard"
+runtime_version="1.2.0"
+apisix_repo="https://github.com/ssignik/apisix"
+apisix_runtime_repo="https://github.com/ssignik/apisix-build-tools.git"
+dashboard_repo="https://github.com/ssignik/apisix-dashboard"
 
 ### set the default image for deb package
 ifeq ($(type), deb)
@@ -46,7 +46,7 @@ cache_to=type=local,dest=/tmp/.buildx-cache
 ### $(4) is code path
 ifneq ($(buildx), True)
 define build
-	docker build -t apache/$(1)-$(3):$(version) \
+	docker build -t zhaoyan0879/$(1)-$(3):$(version) \
 		--build-arg checkout_v=$(checkout) \
 		--build-arg PACKAGE_TYPE=$(3) \
 		--build-arg VERSION=$(version) \
@@ -58,7 +58,7 @@ define build
 endef
 else
 define build
-	docker buildx build -t apache/$(1)-$(3):$(version) \
+	docker buildx build -t zhaoyan0879/$(1)-$(3):$(version) \
 		--build-arg checkout_v=$(checkout) \
 		--build-arg PACKAGE_TYPE=$(3) \
 		--build-arg VERSION=$(version) \
@@ -80,7 +80,7 @@ endif
 ### $(4) is code path
 ifneq ($(buildx), True)
 define build_runtime
-	docker build -t apache/$(1)-$(3):$(runtime_version) \
+	docker build -t zhaoyan0879/$(1)-$(3):$(runtime_version) \
 		--build-arg checkout_v=$(checkout) \
 		--build-arg VERSION=$(version) \
 		--build-arg RUNTIME_VERSION=$(runtime_version) \
@@ -91,7 +91,7 @@ define build_runtime
 endef
 else
 define build_runtime
-	docker buildx build -t apache/$(1)-$(3):$(runtime_version) \
+	docker buildx build -t zhaoyan0879/$(1)-$(3):$(runtime_version) \
 		--build-arg checkout_v=$(checkout) \
 		--build-arg VERSION=$(version) \
 		--build-arg RUNTIME_VERSION=$(runtime_version) \
@@ -114,7 +114,7 @@ endif
 ### $(6) is code path
 ifneq ($(buildx), True)
 define build-image
-	docker build -t apache/$(1)-$(3):$(version) \
+	docker build -t zhaoyan0879/$(1)-$(3):$(version) \
 		--build-arg OPENRESTY_NAME=$(4) \
 		--build-arg OPENRESTY_VERSION=$(5) \
 		--build-arg CODE_PATH=$(6) \
@@ -122,7 +122,7 @@ define build-image
 endef
 else
 define build-image
-	docker buildx build -t apache/$(1)-$(3):$(version) \
+	docker buildx build -t zhaoyan0879/$(1)-$(3):$(version) \
 		--build-arg OPENRESTY_NAME=$(4) \
 		--build-arg OPENRESTY_VERSION=$(5) \
 		--build-arg CODE_PATH=$(6) \
@@ -137,7 +137,7 @@ endif
 ### $(1) is name
 ### $(2) is package type
 define package
-	docker build -t apache/$(1)-packaged-$(2):$(version) \
+	docker build -t zhaoyan0879/$(1)-packaged-$(2):$(version) \
 		--build-arg VERSION=$(version) \
 		--build-arg ITERATION=$(iteration) \
 		--build-arg PACKAGE_VERSION=$(version) \
@@ -146,7 +146,7 @@ define package
 		--build-arg OPENRESTY=$(openresty) \
 		--build-arg ARTIFACT=$(artifact) \
 		-f ./dockerfiles/Dockerfile.package.$(1) .
-	docker run -d --rm --name output --net="host" apache/$(1)-packaged-$(2):$(version)
+	docker run -d --rm --name output --net="host" zhaoyan0879/$(1)-packaged-$(2):$(version)
 	docker cp output:/output ${PWD}
 	docker stop output
 	docker system prune -a -f
@@ -156,7 +156,7 @@ endef
 ### $(1) is name
 ### $(2) is package type
 define package_runtime
-	docker build -t apache/$(1)-packaged-$(2):$(runtime_version) \
+	docker build -t zhaoyan0879/$(1)-packaged-$(2):$(runtime_version) \
 		--build-arg VERSION=$(version) \
 		--build-arg ITERATION=$(iteration) \
 		--build-arg PACKAGE_VERSION=$(version) \
@@ -165,7 +165,7 @@ define package_runtime
 		--build-arg OPENRESTY=$(openresty) \
 		--build-arg ARTIFACT=$(artifact) \
 		-f ./dockerfiles/Dockerfile.package.$(1) .
-	docker run -d --rm --name output --net="host" apache/$(1)-packaged-$(2):$(runtime_version)
+	docker run -d --rm --name output --net="host" zhaoyan0879/$(1)-packaged-$(2):$(runtime_version)
 	docker cp output:/output ${PWD}
 	docker stop output
 	docker system prune -a -f

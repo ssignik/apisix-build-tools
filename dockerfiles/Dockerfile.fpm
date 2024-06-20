@@ -1,8 +1,20 @@
-FROM ubuntu:focal
+# FROM ubuntu:focal
+# 
+# RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+#     && DEBIAN_FRONTEND=noninteractive apt-get install -y git \
+#     && DEBIAN_FRONTEND=noninteractive apt-get install -y ruby ruby-dev rubygems build-essential rpm \
+#     && gem install dotenv -v 2.8.1 \
+#     && gem install fpm \
+#     && fpm --version
+# 
+# CMD /usr/local/bin/fpm
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y git \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y ruby ruby-dev rubygems build-essential rpm \
+FROM openeuler/openeuler:22.03
+
+RUN dnf -y update \
+    && dnf install -y git \
+    && dnf install -y ruby ruby-devel.x86_64 rubygems rpm \
+    && dnf groupinstall -y "Development Tools" \
     && gem install dotenv -v 2.8.1 \
     && gem install fpm \
     && fpm --version
